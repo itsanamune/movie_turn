@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommender</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Movie Recommender</h1>
+    <form id="recommendForm">
+        <label for="user_id">User ID:</label>
+        <input type="number" id="user_id" name="user_id" required><br><br>
+        <label for="movie_ids">Movie IDs (comma-separated):</label>
+        <input type="text" id="movie_ids" name="movie_ids" required><br><br>
+        <input type="submit" value="Get Recommendations">
+    </form>
+    <div id="recommendations"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#recommendForm').submit(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '/recommend',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        let html = '<h2>Recommendations:</h2><ul>';
+                        response.forEach(function(item) {
+                            html += `<li>Movie ID: ${item[0]}, Predicted Rating: ${item[1].toFixed(2)}</li>`;
+                        });
+                        html += '</ul>';
+                        $('#recommendations').html(html);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

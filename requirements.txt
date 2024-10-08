@@ -1,0 +1,7 @@
+pandas
+numpy
+scikit-learn
+surprise
+flask
+boto3
+sagemaker
